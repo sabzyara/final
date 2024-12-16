@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Olaf's Bakery</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f9f9f9, #d1e9f7);
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+
+        .header .logo {
+            width: 120px; /* Увеличиваем размер */
+            height: 120px; /* Делаем квадрат для пропорциональности */
+            border-radius: 50%; /* Оформляем в круг */
+            object-fit: cover; /* Убираем искажения */
+            margin-bottom: 10px;
+            border: 4px solid #3b82f6; /* Обводка круга */
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #3b82f6;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-form {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-form label {
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-form input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .login-form input:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .login-button {
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .login-button:hover {
+            background: #2c6fe4;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="snow-container"></div>
+<div class="login-container">
+    <div class="header">
+        <img th:src="${'/images/olaf_logo.jpg'}" class="logo">
+        <h1>Olaf's Bakery</h1>
+        <p>Your frosty delights await!</p>
+    </div>
+    <form th:action="@{/bakery/login}" method="post">
+        <div class="login-form">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <button type="submit" class="login-button">Login</button>
+        </div>
+    </form>
+    <div class="footer">
+        <p>❄️ Powered by Olaf's warm hugs and frosty treats ❄️</p>
+        Don't have an account yet? <a href="/bakery/addUser">Sign up</a><br>
+    </div>
+</div>
+</body>
+</html>
+

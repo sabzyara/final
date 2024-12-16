@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #6bbaf7;
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        .header-title {
+            text-align: center;
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header-title p {
+            margin: 5px 0 0;
+            font-size: 1em;
+            font-style: italic;
+        }
+        .topnav {
+            background-color: #6bbaf7;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .topnav a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+        .topnav a:hover {
+            background-color: #4a98d3;
+        }
+        .container {
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #333;
+        }
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+        .form-group textarea {
+            height: 120px;
+        }
+        .form-group button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .form-group button:hover {
+            background-color: #4a98d3;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        footer {
+            background-color: #6bbaf7;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-title">
+        <h1>Create New Product</h1>
+        <p>Fill out the form below to add a new product.</p>
+    </div>
+</header>
+
+<div class="topnav">
+    <a href="/bakery/products">Products</a>
+</div>
+
+<div class="container">
+    <form th:action="@{/bakery/saveProduct}" th:object="${product}" method="POST" enctype="multipart/form-data">
+
+
+    <div class="form-group">
+            <label for="prodName">Product Name:</label>
+            <input type="text" id="prodName" name="prodName" th:value="${product.prodName}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="prdescription">Description:</label>
+            <textarea id="prdescription" name="prdescription" required th:text="${product.prdescription}"></textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                <option value="" th:selected="${product.status == null or product.status == ''}">All</option>
+                <option value="AVAILABLE" th:selected="${product.status == 'AVAILABLE'}">AVAILABLE</option>
+                <option value="OUT OF STOCK" th:selected="${product.status == 'OUT OF STOCK'}">OUT OF STOCK</option>
+                <option value="COMING SOON" th:selected="${product.status == 'COMING SOON'}">COMING SOON</option>
+            </select>
+        </div>
+
+        <!-- Цена -->
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" th:value="${product.price}" />
+        </div>
+
+        <!-- Дата истечения срока годности -->
+        <div class="form-group">
+            <label for="expDate">Expiration Date:</label>
+            <input type="date" id="expDate" name="expDate" th:value="${product.expDate}" />
+        </div>
+
+        <!-- Категория -->
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select id="category" th:field="*{category.catId}" required>
+                <option th:each="category : ${category}" th:value="${category.catId}" th:text="${category.name}"></option>
+            </select>
+        </div>
+
+        <!-- Фото -->
+        <div class="form-group">
+            <label for="photoFile">Upload Photo:</label>
+            <input type="file" id="photoFile" name="photoFile" />
+        </div>
+
+        <!-- Кнопка отправки -->
+        <div class="form-group">
+            <button type="submit">Save Product</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2024 Bakery. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

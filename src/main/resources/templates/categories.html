@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Categories</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 30px;
+      padding: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th, td {
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button.delete {
+      background-color: #f44336;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    th {
+      background-color: #ddd;
+    }
+    .actions form {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<h2>All Categories</h2>
+<button th:onclick="|location.href='@{/posgr/home}'|">Home</button>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr th:each="cat : ${category}">
+      <td th:text="${cat.catId}"></td>
+      <td th:text="${cat.name}"></td>
+      <td th:text="${cat.description}"></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
