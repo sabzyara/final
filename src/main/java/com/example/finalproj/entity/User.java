@@ -48,4 +48,13 @@ public class User {
     private String profileImage;
 
 
+    private String resetCode;
+
+
+    public Long getId() {
+        return userId;
+    }
+
+    public void setResetCode(String resetCode) {
+    }
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #6bbaf7;
+      padding: 15px;
+      text-align: center;
+      color: white;
+    }
+    .container {
+      padding: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="file"],
+    input[type="email"]{
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #4a98d3;
+    }
+    footer {
+      background-color: #6bbaf7;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Edit Profile</h1>
+</header>
+<div class="container">
+  <form action="/bakery/profile/update" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:value="${user.username}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:value="${user.email}" required>
+
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+
+    <button type="submit">Save Changes</button>
+    <button type="button" onclick="location.href='/bakery/profile'">Cancel</button>
+  </form>
+</div>
+<footer>
+  <p>© 2024 Olaf's Bakery | Designed with love and flour.</p>
+</footer>
+</body>
+</html>

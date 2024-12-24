@@ -35,18 +35,20 @@ public class  Product {
     @Column(name = "photo")
     private String photo;
 
-    private String price;
+    private double price;
 
     @Column(name = "exp_date")
     @FutureOrPresent(message = "Date is invalid")
     private LocalDate expDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "catId")
     private Category category;
 
     @Transient
     private MultipartFile photoFile;
 
-
+    public char[] getName() {
+        return prodName.toCharArray();
+    }
 }

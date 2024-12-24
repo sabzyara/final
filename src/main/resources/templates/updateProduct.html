@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #6bbaf7;
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            padding: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #4a98d3;
+        }
+        footer {
+            background-color: #6bbaf7;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Update Product</h1>
+</header>
+<div class="container">
+    <form th:action="@{/bakery/updateProduct/{id}(id=${product.prodId})}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="prodId" th:value="${product.prodId}">
+
+        <label for="prodName">Product Name</label>
+        <input type="text" id="prodName" name="prodName" th:value="${product.prodName}" required>
+
+        <label for="prDescription">Product Description</label>
+        <input type="text" id="prDescription" name="prDescription" th:value="${product.prdescription}" required>
+
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" th:value="${product.price}" step="0.01" required>
+
+        <label for="expDate">Expiration Date</label>
+        <input type="date" id="expDate" name="expDate" th:value="${#temporals.format(product.expDate, 'yyyy-MM-dd')}" required>
+
+        <label for="image">Product Image</label>
+        <input type="file" id="image" name="image">
+
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="" th:selected="${product.status == null or product.status == ''}">All</option>
+            <option value="AVAILABLE" th:selected="${product.status == 'AVAILABLE'}">AVAILABLE</option>
+            <option value="OUT OF STOCK" th:selected="${product.status == 'OUT OF STOCK'}">OUT OF STOCK</option>
+            <option value="COMING SOON" th:selected="${product.status == 'COMING SOON'}">COMING SOON</option>
+        </select>
+
+        <label for="category">Category</label>
+        <select id="category" name="category.catId" required>
+            <option th:each="cat : ${categories}" th:value="${cat.catId}" th:text="${cat.name}"></option>
+        </select>
+
+        <button type="submit">Update Product</button>
+    </form>
+
+</div>
+<footer>
+    <p>&copy; 2024 Bakery Management</p>
+</footer>
+</body>
+</html>

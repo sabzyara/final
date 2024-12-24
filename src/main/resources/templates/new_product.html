@@ -91,11 +91,6 @@
         .form-group button:hover {
             background-color: #4a98d3;
         }
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
         footer {
             background-color: #6bbaf7;
             color: white;
@@ -142,19 +137,16 @@
             </select>
         </div>
 
-        <!-- Цена -->
         <div class="form-group">
             <label for="price">Price:</label>
             <input type="text" id="price" name="price" th:value="${product.price}" />
         </div>
 
-        <!-- Дата истечения срока годности -->
         <div class="form-group">
             <label for="expDate">Expiration Date:</label>
             <input type="date" id="expDate" name="expDate" th:value="${product.expDate}" />
         </div>
 
-        <!-- Категория -->
         <div class="form-group">
             <label for="category">Category:</label>
             <select id="category" th:field="*{category.catId}" required>
@@ -162,13 +154,11 @@
             </select>
         </div>
 
-        <!-- Фото -->
         <div class="form-group">
             <label for="photoFile">Upload Photo:</label>
-            <input type="file" id="photoFile" name="photoFile" />
+            <input type="file" id="photoFile" name="photoFile" accept="image/*"/>
         </div>
 
-        <!-- Кнопка отправки -->
         <div class="form-group">
             <button type="submit">Save Product</button>
         </div>

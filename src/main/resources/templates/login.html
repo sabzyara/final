@@ -1,118 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to Olaf's Bakery</title>
+    <title>Login</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #f9f9f9, #d1e9f7);
-            color: #333;
-            margin: 0;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #f9f9f9, #d1e9f7);
         }
-
-        .login-container {
-            background: #fff;
+        .form-container {
+            background-color: #ffffff;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
             text-align: center;
-            width: 350px;
         }
-
-        .header .logo {
-            width: 120px; /* Увеличиваем размер */
-            height: 120px; /* Делаем квадрат для пропорциональности */
-            border-radius: 50%; /* Оформляем в круг */
-            object-fit: cover; /* Убираем искажения */
-            margin-bottom: 10px;
-            border: 4px solid #3b82f6; /* Обводка круга */
+        h2 {
+            color: #333333;
         }
-
-        .header h1 {
-            font-size: 24px;
-            color: #3b82f6;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .login-form {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .login-form label {
+        .form-group {
+            margin-bottom: 15px;
             text-align: left;
-            font-size: 14px;
-            color: #555;
         }
-
-        .login-form input {
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .login-form input:focus {
-            border-color: #3b82f6;
-            outline: none;
-        }
-
-        .login-button {
-            padding: 10px 20px;
-            background: #3b82f6;
-            color: #fff;
+            background-color: #3b82f6;;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            color: white;
             font-size: 16px;
-            transition: background 0.3s;
+            border-radius: 4px;
+            cursor: pointer;
         }
-
-        .login-button:hover {
-            background: #2c6fe4;
+        button:hover {
+            background-color: #2c6fe4;
         }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #999;
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .forgot-password {
+            margin-top: 10px;
+        }
+        .forgot-password a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .modal-content h3 {
+            color: #333333;
         }
     </style>
 </head>
 <body>
-<div class="snow-container"></div>
-<div class="login-container">
-    <div class="header">
-        <img th:src="${'/images/olaf_logo.jpg'}" class="logo">
-        <h1>Olaf's Bakery</h1>
-        <p>Your frosty delights await!</p>
-    </div>
+<div class="form-container">
+    <h2>Login</h2>
     <form th:action="@{/bakery/login}" method="post">
-        <div class="login-form">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" placeholder="Enter your email" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-        <button type="submit" class="login-button">Login</button>
+        <div th:if="${loginError != null}" class="error">
+            Invalid username or password!
         </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter username" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required />
+        </div>
+        <button type="submit">Login</button>
     </form>
-    <div class="footer">
-        <p>❄️ Powered by Olaf's warm hugs and frosty treats ❄️</p>
+    <p class="forgot-password">
         Don't have an account yet? <a href="/bakery/addUser">Sign up</a><br>
-    </div>
+        <a href="/auth/forgot-password" id="forgotPasswordLink">Forgot password?</a>
+    </p>
 </div>
 </body>
 </html>

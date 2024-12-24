@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #6bbaf7;
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 4px solid #6bbaf7;
+        }
+        .header-title {
+            text-align: center;
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header-title p {
+            margin: 5px 0 0;
+            font-size: 1em;
+            font-style: italic;
+        }
+        .topnav {
+            background-color: #6bbaf7;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .topnav a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+        .topnav a:hover {
+            background-color: #4a98d3;
+        }
+        .container {
+            padding: 30px;
+        }
+        .container button{
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button-bar button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-bar button:hover {
+            background-color: #4a98d3;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-card {
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff5f5;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .product-card h3 {
+            font-size: 1.4em;
+            margin: 10px 0;
+            color: #333;
+        }
+        .product-card p {
+            font-size: 1em;
+            margin: 5px 0;
+            color: #777;
+        }
+        .product-card button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .product-card button:hover {
+            background-color: #4a98d3;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .pagination a:hover {
+            background-color: #4a98d3;
+        }
+        .pagination .disabled {
+            background-color: #ddd;
+            color: #bbb;
+        }
+        footer {
+            background-color: #6bbaf7;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img th:src="${'/images/olaf_logo.jpg'}">
+    <div class="header-title">
+        <h1>Our Delicious Products</h1>
+        <p>Freshly baked, just for you</p>
+    </div>
+</header>
+
+<div class="topnav">
+    <a class="active" th:href="@{/bakery/main}">Home</a>
+</div>
+<div class="container">
+    <form th:action="@{/bakery/products}" method="get" style="text-align: center; margin-bottom: 30px;">
+        <input type="text" name="keyword" placeholder="Search by name or description" th:value="${search}" style="padding: 10px; width: 200px;">
+        <button type="submit" class="btn">Search</button>
+    </form>
+
+    <form th:action="@{/bakery/products}" method="get" style="text-align: center; margin-bottom: 30px;">
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="" th:selected="${status == null}">All</option>
+            <option value="AVAILABLE" th:selected="${status == 'AVAILABLE'}">AVAILABLE</option>
+            <option value="OUT OF STOCK" th:selected="${status == 'OUT OF STOCK'}">OUT OF STOCK</option>
+            <option value="COMING SOON" th:selected="${status == 'COMING SOON'}">COMING SOON</option>
+        </select>
+
+        <label for="category">Category:</label>
+        <select name="category" id="category" style="padding: 3px; width: 150px;">
+            <option value="" th:selected="${category == null}">All Categories</option>
+            <option th:each="cat : ${categories}" th:value="${cat.name}" th:text="${cat.name}" th:selected="${cat.name == category}"></option>
+        </select>
+
+        <button type="submit" class="btn">Filter</button>
+    </form>
+
+    <div class="product-container">
+        <div th:each="product : ${product}" class="product-card">
+            <img th:src="${product.photo != null ? '/uploads/' + product.photo : '/images/default-profile.jpg'}">
+            <h3 th:text="${product.prodName}"></h3>
+            <p th:text="${product.prdescription}"></p>
+            <p>Price: $<span th:text="${product.price}"></span></p>
+            <p>Expiration Date: <span th:text="${#temporals.format(product.expDate, 'yyyy-MM-dd')}"></span></p>
+            <form th:action="@{/bakery/addToCart}" method="post">
+                <input type="hidden" name="prodId" th:value="${product.prodId}">
+                <button type="submit" class="btn">Add to Cart</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div>
+        <ul class="pagination">
+            <li th:classappend="${current == 0} ? 'disabled'">
+                <a th:href="@{/bakery/products(page=${current - 1})}" aria-label="Previous">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, total - 1)}" th:classappend="${i == current} ? 'active'">
+                <a th:href="@{/bakery/products(page=${i})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:classappend="${current == total - 1} ? 'disabled'">
+                <a th:href="@{/bakery/products(page=${current + 1})}" aria-label="Next">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Bakery Products | All rights reserved</p>
+</footer>

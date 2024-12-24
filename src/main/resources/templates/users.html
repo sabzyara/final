@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>Users</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #6bbaf7;
+      padding: 15px;
+      text-align: center;
+      color: white;
+    }
+    header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 4px solid #6bbaf7;
+    }
+    .header-title {
+      text-align: center;
+    }
+    .header-title h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .header-title p {
+      margin: 5px 0 0;
+      font-size: 1em;
+      font-style: italic;
+    }
+    .button-bar {
+      background-color: #6bbaf7;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      border-bottom: 2px solid #6bbaf7;
+    }
+    .button-bar button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .button-bar button:hover {
+      background-color: #4a98d3;
+    }
+    main {
+      text-align: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    main p {
+      font-size: 1.2em;
+      line-height: 1.6;
+    }
+    h2 {
+      margin: 20px 0;
+      font-size: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th, td {
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+    table th {
+      background-color: #6bbaf7;
+    }
+    button {
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button.delete {
+      background-color: #f44336;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    th {
+      background-color: #ddd;
+    }
+    .actions form {
+      display: inline-block;
+    }
+    footer {
+      background-color: #6bbaf7;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+
+    td img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <img src="/images/olaf_logo.jpg" alt="Olaf's Bakery">
+  <div class="header-title">
+    <h1>Olaf's Bakery</h1>
+    <p>The Home of Freshly Baked Goodness</p>
+  </div>
+</header>
+<div class="button-bar">
+  <button onclick="location.href='/bakery/main'">Back</button>
+</div>
+<main>
+  <h2>All Users</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Photo</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.userId}"></td>
+      <td><img th:src="@{${user.profileImage}}" alt="User Photo"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.createdAt}"></td>
+    </tr>
+    </tbody>
+  </table>
+</main>
+<footer>
+  © 2024 Olaf's Bakery | Designed with love and flour.
+</footer>
+</body>
+</html>

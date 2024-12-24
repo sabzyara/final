@@ -1,17 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="ISO-8859-1">
+  <meta charset="UTF-8">
   <title>Categories</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      background: linear-gradient(to bottom, #d9f2ff, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #6bbaf7;
+      padding: 15px;
+      text-align: center;
+      color: white;
+    }
+    header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 4px solid #6bbaf7;
+    }
+    .header-title {
+      text-align: center;
+    }
+    .header-title h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .header-title p {
+      margin: 5px 0 0;
+      font-size: 1em;
+      font-style: italic;
+    }
+    .button-bar {
+      background-color: #6bbaf7;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      border-bottom: 2px solid #6bbaf7;
+    }
+    .button-bar button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .button-bar button:hover {
+      background-color: #4a98d3;
+    }
+    main {
+      text-align: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    main p {
+      font-size: 1.2em;
+      line-height: 1.6;
     }
     h2 {
-      margin: 0;
+      margin: 20px 0;
       font-size: 30px;
-      padding: 10px 0;
     }
     table {
       width: 100%;
@@ -22,13 +79,17 @@
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
+
     }
     th, td {
       padding: 5px;
       border: 1px solid #ccc;
     }
+    table th{
+      background-color: #6bbaf7;
+    }
     button {
-      background-color: #4CAF50;
+      background-color: #3b82f6;
       border: none;
       color: white;
       padding: 8px 16px;
@@ -49,26 +110,146 @@
     .actions form {
       display: inline-block;
     }
+    footer {
+      background-color: #6bbaf7;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 40%;
+      border-radius: 10px;
+    }
+
+    .modal-close {
+      float: right;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus {
+      color: black;
+    }
   </style>
 </head>
 <body>
-<h2>All Categories</h2>
-<button th:onclick="|location.href='@{/posgr/home}'|">Home</button>
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Description</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr th:each="cat : ${category}">
+<header>
+  <img src="/images/olaf_logo.jpg" alt="Olaf's Bakery">
+  <div class="header-title">
+    <h1>Olaf's Bakery</h1>
+    <p>The Home of Freshly Baked Goodness</p>
+  </div>
+</header>
+<div class="button-bar">
+  <button onclick="location.href='/bakery/main'">Back</button>
+  <button onclick="location.href='/bakery/addCategories'">Add Categories</button>
+</div>
+<main>
+  <h2>All Categories</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cat : ${categories}">
       <td th:text="${cat.catId}"></td>
       <td th:text="${cat.name}"></td>
       <td th:text="${cat.description}"></td>
+      <td class="actions">
+        <button class="button"
+                th:onclick="|openEditModal(this)|"
+                th:data-catId="${cat.catId}"
+                th:data-name="${cat.name}"
+                th:data-description="${cat.description}">
+          Edit
+        </button>
+        <button class="button delete" th:onclick="'confirmDelete(' + ${cat.catId} + ')'" >Delete</button>
+      </td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeEditModal()">&times;</span>
+      <h3>Edit Category</h3>
+      <form id="editForm" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="description">Email:</label>
+        <input type="text" id="description" name="description" required><br><br>
+        <button type="submit" class="button">Save</button>
+      </form>
+    </div>
+  </div>
+</main>
+<footer>
+  © 2024 Olaf's Bakery | Designed with love and flour.
+</footer>
+
+<script>
+  function openEditModal(button) {
+    const categoryId = button.getAttribute('data-catId');
+    const name = button.getAttribute('data-name');
+    const description = button.getAttribute('data-description');
+
+
+
+    document.getElementById('name').value = name;
+    document.getElementById('description').value = description;
+
+
+
+    document.getElementById('editForm').action = `/bakery/${categoryId}`;
+
+
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'block';
+  }
+
+  function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'none';
+  }
+  function confirmDelete(catId) {
+    const confirmation = confirm('Are you sure you want to delete this category?');
+    if (confirmation) {
+      fetch(`/bakery/${catId}`, { method: 'DELETE' })
+              .then(response => {
+                if (response.ok) {
+                  alert('Category deleted successfully');
+                  location.reload();
+                } else {
+                  alert('Failed to delete category');
+                }
+              });
+    }
+  }
+</script>
 </body>
 </html>
+

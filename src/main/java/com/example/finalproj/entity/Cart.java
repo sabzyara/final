@@ -25,12 +25,11 @@ public class Cart {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
-
-    public boolean isOrgered = false;
+    public boolean isOrdered = false;
 
 
     public Cart(User user) {
+        this.user = user;
     }
+
 }

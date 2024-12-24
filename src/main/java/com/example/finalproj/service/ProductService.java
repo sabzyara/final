@@ -4,6 +4,7 @@ import com.example.finalproj.entity.Category;
 import com.example.finalproj.entity.Product;
 import com.example.finalproj.repository.CategoryRepository;
 import com.example.finalproj.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,32 +29,16 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Page<Product> getProductsByStatus(String status, Pageable pageable) {
-        return productRepository.findByStatus(status, pageable);
-    }
 
-    public Page<Product> getProductsByCategory(String categoryName, Pageable pageable) {
-        return productRepository.findByCategory_Name(categoryName, pageable);
-    }
-
-    public Page<Product> getProductsByStatusAndCategory(String status, String categoryName, Pageable pageable) {
-        return productRepository.findByStatusAndCategory_Name(status, categoryName, pageable);
-    }
-
-    public Page<Product> searchProducts(String keyword, Pageable pageable) {
-        return productRepository.findByProdNameContainingIgnoreCaseOrPrdescriptionContainingIgnoreCase(keyword, keyword, pageable);
-
-    }
-    public Product getProductById(int id) {
+    public Product getProductById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.orElse(null);
     }
 
-    public void saveProduct(Product product) {
-        productRepository.save(product);
-    }
-
-    public void deleteProductById(int id) {
+    public void deleteProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new IllegalArgumentException("Product with ID " + id + " does not exist");
+        }
         productRepository.deleteById(id);
     }
     public List<Category> getAllCategories() {
@@ -83,4 +68,15 @@ public class ProductService {
 
         return productRepository.findByProdNameContainingIgnoreCaseOrPrdescriptionContainingIgnoreCase(search, search, pageable);
     }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    @Transactional
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+
 }

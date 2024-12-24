@@ -2,29 +2,44 @@ package com.example.finalproj.controller;
 
 
 import com.example.finalproj.entity.User;
-import com.example.finalproj.repository.UserRepository;
 import com.example.finalproj.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import com.example.finalproj.service.EmailService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/bakery/user")
+@RequestMapping("/bakery")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final EmailService emailService;
+
+
+
+    public UserController(EmailService emailService, UserService userService ) {
+        this.emailService = emailService;
         this.userService = userService;
     }
 
+    @PostMapping("/send-welcome-email")
+    public String sendWelcomeEmail(@RequestParam String email) {
+        String subject = "Welcome!";
+        String body = "Welcome to our service.";
+        emailService.sendEmail(email, subject, body);
+        return "Email sent!";
+    }
 
+
+    @GetMapping("/users")
+    public String users(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "users";
+    }
 
 
 }
